@@ -25,47 +25,40 @@ Answer looks as the following thus parsing it to retrieve only the needed data
 
 
 class GandalfLevel:
-
-    s = requests.session()
-
-    url = "https://gandalf.lakera.ai/api/send-message"
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.3'
-    }
-
+    
     def __init__(self, level):
         self.level = level
+        self.s = requests.Session()
+        self.url = "https://gandalf.lakera.ai/api/send-message"
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.3'
+        }
 
     def generate_payload(self, user_input):
-        if self.level == 1:
-            defender = 'baseline'
-        elif self.level == 2:
-            defender = 'do-not-tell'
-        elif self.level == 3:
-            defender = 'do-not-tell-and-block'
-        elif self.level == 4:
-            defender = 'gpt-is-password-encoded'
-        elif self.level == 5:
-            defender = 'word-blacklist'
-        elif self.level == 6:
-            defender = 'gpt-blacklist'
-        elif self.level == 7:
-            defender = 'gandalf'
-        else:
-            print("[!] Something is wrong. Exiting...")
-            sys.exit(1)
+        #Generates the payload based on the selected level and generated user_input
+        defender_mapping = {
+            1: 'baseline',
+            2: 'do-not-tell',
+            3: 'do-not-tell-and-block',
+            4: 'gpt-is-password-encoded',
+            5: 'word-blacklist',
+            6: 'gpt-blacklist',
+            7: 'gandalf'
+        }
 
-        payload = {'defender':defender, 'prompt':user_input}
-        return payload
+        defender = defender_mapping.get(self.level)
+        if not defender:
+            raise ValueError("[!] Invalid level specified.")
+
+        return {'defender': defender, 'prompt': user_input}
 
     def interact(self, payload):
-        req = self.s.post(self.url, data=payload, headers=self.headers)
-        response_json = req.json()
+        #Sends the generated payload to Gandalf and parses the response
         try:
-            answer = response_json["answer"]
-            return answer
+            response = self.s.post(self.url, data=payload)
+            response_json = response.json()
+            return response_json.get("answer", "[!] No answer found.")
+        except requests.RequestException as e:
+            print(f"[!] Request failed: {e}")
         except KeyError:
-            print("[!] No answer found. Exiting...")
-            sys.exit(1)
-
-    
+            print("[!] Unexpected response format.")
