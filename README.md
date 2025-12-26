@@ -7,7 +7,7 @@ The configuration could in theory be used to test other GenAI systems.
 
 ## Steps to initialize
 1. Create a config.ini file in the same folder
-2. Add the following lines in it (add your openai API key):
+2. Add the following lines in it (add your OpenRouter API key):
 ```
 [KEYS]
 API_KEY = sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -25,3 +25,4 @@ This should be the only steps required to run the bot.
 26/12/25:
 - Switched the API provider to OpenRouter which allows the usage of an OpenAI-compatible completion API (thus access to more than 400+ models)
 - Made the Gandalf bot responsive again (Lakera changed the API endpoint base URL)
+
