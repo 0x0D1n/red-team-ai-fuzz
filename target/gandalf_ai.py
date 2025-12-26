@@ -29,7 +29,9 @@ class GandalfLevel:
     def __init__(self, level):
         self.level = level
         self.s = requests.Session()
-        self.url = "https://gandalf.lakera.ai/api/send-message"
+        #self.url = "https://gandalf.lakera.ai/api/send-message"
+        self.url = "https://gandalf-api.lakera.ai/api/send-message"
+
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.3'
         }
@@ -43,7 +45,8 @@ class GandalfLevel:
             4: 'gpt-is-password-encoded',
             5: 'word-blacklist',
             6: 'gpt-blacklist',
-            7: 'gandalf'
+            7: 'gandalf',
+            8: 'gandalf-the-white'
         }
 
         defender = defender_mapping.get(self.level)

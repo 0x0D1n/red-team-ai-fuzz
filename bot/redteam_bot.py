@@ -2,8 +2,8 @@ from openai import OpenAI
 
 class RedTeamBot:
 
-    def __init__(self, api_key):
-        self.client = OpenAI(api_key=api_key)
+    def __init__(self, base_url, api_key):
+        self.client = OpenAI(base_url=base_url, api_key=api_key)
 
     def fuzzer(self, messages):
         response = self.client.chat.completions.create(

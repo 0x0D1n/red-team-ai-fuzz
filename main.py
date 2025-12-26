@@ -13,6 +13,7 @@ https://github.com/Azure/PyRIT/blob/main/doc/demo/1_gandalf.ipynb
 # Read configuration from the config.ini file
 config = configparser.ConfigParser()
 config.read('config.ini')
+BASE_URL = config['KEYS']['BASE_URL']
 API_KEY = config['KEYS']['API_KEY']
 MAX_TOKENS = config['KEYS']['MAX_TOKENS'] # If needed/wanted
 
@@ -26,12 +27,12 @@ with open("./roles/gandalf_ai_cracker", "r") as file:
     role = file.read()
 
 # Initialize the RedTeam AI BOT
-readteambot = RedTeamBot(API_KEY)
+readteambot = RedTeamBot(BASE_URL, API_KEY)
 # Set the role (behaviour/goal) of the AI in the roles folder
 messages = [{"role": "system", "content": role}]
 
 # Initialize the AI with the level X
-gandalf_level = GandalfLevel(6)
+gandalf_level = GandalfLevel(8)
 
 # Give the RedTeam BOT X chances to retrieve the password
 for _ in range(50):
